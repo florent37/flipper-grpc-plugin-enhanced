@@ -21,6 +21,8 @@ select the archive
 
 <img width="155" alt="Capture d’écran 2025-06-24 à 17 14 06" src="https://github.com/user-attachments/assets/549ca151-d9f0-42d9-9b42-49c0f963a372" />
 
+Then Install
+
 <img width="467" alt="Capture d’écran 2025-06-24 à 17 14 12" src="https://github.com/user-attachments/assets/669afdc5-a4eb-4348-9fff-bb7a1a50ff04" />
 
 Then relaunch flipper (or apply with hot reload)
