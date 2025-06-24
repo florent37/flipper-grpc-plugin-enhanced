@@ -1,75 +1,27 @@
-# DEPRECATED
+# Features
 
-This library is no longer maintained and this repository is archived.
+Copy Request & Response Body
 
-# Flipper gRPC plugin
-
-This is a plugin for Facebook debugging tool [Flipper](https://fbflipper.com/) for logging gRPC requests from mobile clients. 
-
-## Desktop
-
-You need to install desktop version of the plugin to the Flipper desktop app. Open `View` > `Manage Plugins` > `Install plugins` and search for `grpc`. Once installed restart the desktop app.
-
-## Android
-[ ![Download](https://api.bintray.com/packages/ackeecz/flipper-plugin-grpc/grpc/images/download.svg) ](https://bintray.com/ackeecz/flipper-plugin-grpc/grpc/_latestVersion)
-
-### Gradle
-
-```groovy
-dependencies {
-    ...
-    implementation "cz.ackee.flipper:grpc:x.x.x"
-}
-```
+<img width="333" alt="Capture d’écran 2025-06-24 à 17 17 03" src="https://github.com/user-attachments/assets/faf52736-1347-4f64-b58a-afed0252d090" />
 
 
-### App
+# How to install
 
-Inside your Flipper init phase add `FlipperGrpcPlugin` and keep the instance somewhere to be used later
+just get the .tgz from a [github release](https://github.com/florent37/flipper-grpc-plugin-enhanced/releases)
+open Flipper
+go to Settings/Add Plugin
+<img width="280" alt="Capture d’écran 2025-06-24 à 17 13 59" src="https://github.com/user-attachments/assets/2cffcf86-9cd6-4cf9-848d-bb564c86296a" />
 
-```kotlin
-class App : Application() {
+select the archive
+<img width="693" alt="Capture d’écran 2025-06-24 à 17 14 03" src="https://github.com/user-attachments/assets/b62d65c9-970a-4da0-92e7-dd7c9ccd2684" />
+<img width="155" alt="Capture d’écran 2025-06-24 à 17 14 06" src="https://github.com/user-attachments/assets/549ca151-d9f0-42d9-9b42-49c0f963a372" />
+<img width="467" alt="Capture d’écran 2025-06-24 à 17 14 12" src="https://github.com/user-attachments/assets/669afdc5-a4eb-4348-9fff-bb7a1a50ff04" />
 
-    companion object {
-        val flipperGrpcPlugin = FlipperGrpcPlugin()
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        SoLoader.init(this, false)
-
-        val client = AndroidFlipperClient.getInstance(this)
-        ...
-        client.addPlugin(flipperGrpcPlugin)
-        ...
-    }
-}
-```
+Then relaunch flipper (or apply with hot reload)
+<img width="516" alt="Capture d’écran 2025-06-24 à 17 14 14" src="https://github.com/user-attachments/assets/403f8e4c-96a4-4e23-869c-a21d32bcdc59" />
 
 
-When creating your gRPC channel add `ClientInterceptor` provided by the plugin
-```kotlin
-val channel = OkHttpChannelBuilder
-     ...
-     .intercept(App.flipperGrpcPlugin.getInterceptor())
-     .build()
-``` 
+# Thanks
 
-and that's it. If you run your app you should now see requests in Flipper
+This library is a fork of https://github.com/AckeeCZ/flipper-grpc-plugin
 
-![Plugin image](./flipper_plugin.png "Plugin image")
-
-
-### Sample app
-
-If you want to run Android sample app you need either to provide your own proto files and definition of host/port
-or you can use the demo `helloworld` app taken from `grpc-java` (repository)[https://github.com/grpc/grpc-java/tree/master/examples].
-
-You need to build the `hello-world-server` app and run it on your localhost and then use emulator to run the sample app.
-
-
-## iOS
-Currently [gRPC Swift](https://github.com/grpc/grpc-swift) does not have a concept of interceptors and without them it's hard to provide a library
-that could be easily plugged in your code. We are watching closely [this](https://github.com/grpc/grpc-swift/issues/785) issue in the repository
-and once possible we will hop on that! 
-  
