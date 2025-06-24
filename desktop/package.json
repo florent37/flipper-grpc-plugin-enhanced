@@ -1,6 +1,6 @@
 {
   "$schema": "https://fbflipper.com/schemas/plugin-package/v2.json",
-  "name": "flipper-plugin-grpc",
+  "name": "flipper-plugin-grpc-flo",
   "id": "grpc",
   "version": "1.0.1",
   "main": "dist/bundle.js",
@@ -10,7 +10,7 @@
     "flipper-plugin"
   ],
   "icon": "apps",
-  "title": "gRPC communication",
+  "title": "gRPC communication BeReal",
   "scripts": {
     "lint": "flipper-pkg lint",
     "prepack": "flipper-pkg lint && flipper-pkg bundle",
