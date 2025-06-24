@@ -1,6 +1,6 @@
 {
   "$schema": "https://fbflipper.com/schemas/plugin-package/v2.json",
-  "name": "flipper-plugin-grpc-florent",
+  "name": "flipper-plugin-grpc-enhanced",
   "id": "grpc",
   "version": "1.0.1",
   "main": "dist/bundle.js",
@@ -10,7 +10,7 @@
     "flipper-plugin"
   ],
   "icon": "apps",
-  "title": "gRPC communication FLORENT",
+  "title": "gRPC communication Enhanced",
   "scripts": {
     "lint": "flipper-pkg lint",
     "prepack": "flipper-pkg lint && flipper-pkg bundle",
