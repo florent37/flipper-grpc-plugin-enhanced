@@ -2,7 +2,6 @@ import React from "react";
 import {Header, Request, Response} from "./types";
 import {Component, FlexColumn, ManagedTable, Panel, styled, Text, Button} from 'flipper';
 import {notification} from 'antd';
-import {Input} from 'antd';
 
 const WrappingText = styled(Text)({
     wordWrap: 'break-word',
@@ -42,7 +41,7 @@ export default class RequestDetails extends Component<RequestDetailsProps, Reque
 
                 {request.data ? (
                     <Panel
-                        heading={'Request Body FLO'}
+                        heading={'Request Body'}
                         floating={false}
                         padded={false}>
                         <BodyInspector
@@ -55,7 +54,7 @@ export default class RequestDetails extends Component<RequestDetailsProps, Reque
                     <>
                         {response.headers.length > 0 ? (
                             <Panel
-                                heading={`Response Headers`}
+                                heading={"Response Headers"}
                                 floating={false}
                                 padded={false}>
                                 <HeaderInspector headers={response.headers}/>
@@ -63,7 +62,7 @@ export default class RequestDetails extends Component<RequestDetailsProps, Reque
                         ) : null}
                         {response.data ? (
                             <Panel
-                                heading={`Response Body`}
+                                heading={"Response Body"}
                                 floating={false}
                                 padded={false}>
                                 <BodyInspector
@@ -154,86 +153,36 @@ class JSONText extends Component<{ children: any }> {
     }
 }
 
-type BodyInspectorState = {
-    searchTerm: string;
-};
 
-function safeStringify(obj: any, space = 2): string {
-    const seen = new WeakSet();
-    return JSON.stringify(obj, function (key, value) {
-        if (typeof value === 'object' && value !== null) {
-            if (seen.has(value)) {
-                return '[Circular]';
-            }
-            seen.add(value);
-        }
-        return value;
-    }, space);
-}
-
-class BodyInspector extends Component<{ data: string }, BodyInspectorState> {
-    state: BodyInspectorState = {
-        searchTerm: '',
-    };
-
+class BodyInspector extends Component<{ data: string }> {
     handleCopy = () => {
         try {
             const {data} = this.props;
             const parsed = JSON.parse(data);
-            const pretty = safeStringify(parsed, 2);
+            const pretty = JSON.stringify(parsed, null, 2);
             navigator.clipboard.writeText(pretty);
 
             notification.success({
                 message: 'Copied !',
+                //description: 'Le contenu JSON a été copié dans le presse-papiers.',
                 placement: 'bottomRight',
                 duration: 2,
             });
         } catch (e) {
             console.error("Failed to copy JSON", e);
         }
-    };
-
-    handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({searchTerm: e.target.value});
-    };
-
-    highlightMatches(jsonStr: string, term: string) {
-        if (!term) return jsonStr;
-
-        const regex = new RegExp(`(${term})`, 'gi');
-        return jsonStr.split(regex).map((part, i) =>
-            regex.test(part) ? <mark key={i}>{part}</mark> : part
-        );
     }
 
     render() {
         const {data} = this.props;
-        const {searchTerm} = this.state;
-
-        let parsed;
-        try {
-            parsed = JSON.parse(data);
-        } catch (e) {
-            return <Text>Invalid JSON</Text>;
-        }
-
-        const prettyJson = safeStringify(parsed, 2);
+        const parsed = JSON.parse(data);
 
         return (
             <BodyContainer>
-                <div style={{display: 'flex', alignItems: 'center', gap: 8, margin: '0 8px 8px 8px'}}>
+                <div style={{display: 'flex', justifyContent: 'flex-start', marginBottom: 8, marginLeft: 8}}>
                     <Button compact onClick={this.handleCopy}>Copy</Button>
-                    <Input
-                        placeholder="Search in body..."
-                        size="small"
-                        style={{width: 200}}
-                        value={searchTerm}
-                        onChange={this.handleSearch}
-                    />
                 </div>
-                <JSONText>
-                    {this.highlightMatches(prettyJson, searchTerm)}
-                </JSONText>
+                <JSONText>{parsed}</JSONText>
             </BodyContainer>
         );
     }

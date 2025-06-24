@@ -1,2 +1,2 @@
 yarn build
-yarn pack .
+yarn pack
